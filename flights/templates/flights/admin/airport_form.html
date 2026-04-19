@@ -1,0 +1,9 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h2>Ajouter un aéroport</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+  </form>
+{% endblock %}

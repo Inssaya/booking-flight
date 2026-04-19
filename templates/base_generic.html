@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Arka - Flight Booking System{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <header class="main-header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <a href="{% url 'flights:home' %}" class="brand-link">
+            <i class="fas fa-plane"></i>
+            <span>Arka</span>
+          </a>
+        </div>
+        
+        <div class="nav-menu">
+          {% if user.is_authenticated %}
+            {% if user.is_staff %}
+              <div class="nav-item dropdown">
+                <span class="nav-link user-menu">
+                  <i class="fas fa-user-shield"></i>
+                  Admin Panel
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="dropdown-content">
+                  <a href="{% url 'flights:admin_dashboard' %}" class="admin-link">
+                    <i class="fas fa-cog"></i> Dashboard Admin
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="{% url 'login' %}">
+                    <i class="fas fa-sign-out-alt"></i> Changer de compte
+                  </a>
+                </div>
+              </div>
+            {% else %}
+              <div class="nav-item dropdown">
+                <span class="nav-link user-menu">
+                  <i class="fas fa-user"></i>
+                  {{ user.username }}
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="dropdown-content">
+                  <a href="{% url 'accounts:profile' %}">
+                    <i class="fas fa-user-circle"></i> Profil
+                  </a>
+                  <a href="{% url 'flights:my_bookings' %}">
+                    <i class="fas fa-ticket-alt"></i> Mes réservations
+                  </a>
+                  <a href="{% url 'flights:home' %}">
+                    <i class="fas fa-search"></i> Recherche un vol
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="{% url 'login' %}">
+                    <i class="fas fa-sign-out-alt"></i> Changer de compte
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+          {% else %}
+            <a href="{% url 'accounts:signup' %}" class="nav-link">
+              <i class="fas fa-user-plus"></i> Inscription
+            </a>
+            <a href="{% url 'login' %}" class="nav-link btn-primary">
+              <i class="fas fa-sign-in-alt"></i> Connexion
+            </a>
+          {% endif %}
+        </div>
+        
+        <div class="mobile-menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    {% if messages %}
+      <div class="messages-container">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {% if message.tags == 'error' %}
+              <i class="fas fa-exclamation-circle"></i>
+            {% elif message.tags == 'success' %}
+              <i class="fas fa-check-circle"></i>
+            {% elif message.tags == 'warning' %}
+              <i class="fas fa-exclamation-triangle"></i>
+            {% else %}
+              <i class="fas fa-info-circle"></i>
+            {% endif %}
+            {{ message }}
+            <button class="alert-close">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Arka</h3>
+        <p>Your trusted flight booking partner</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="{% url 'flights:home' %}">Search Flights</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'flights:my_bookings' %}">My Bookings</a></li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> teamsupport_of_sinif_group</p>
+        <p><i class="fas fa-phone"></i> 0623842535</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Arka. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .main-header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar {
+      padding: 0;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      height: 70px;
+    }
+
+    .nav-brand .brand-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #667eea;
+      gap: 10px;
+    }
+
+    .nav-brand i {
+      font-size: 1.2em;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #333;
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link:hover {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white !important;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .user-menu {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .dropdown-content {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 10px 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+
+    .dropdown:hover .dropdown-content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #333;
+      transition: background 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .admin-link {
+      color: #e74c3c !important;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: #eee;
+      margin: 5px 0;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    .main-content {
+      min-height: calc(100vh - 140px);
+      padding: 20px 0;
+    }
+
+    .messages-container {
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      padding: 0 20px;
+    }
+
+    .alert {
+      padding: 15px 20px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+
+    .alert-success {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      color: white;
+    }
+
+    .alert-error {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+
+    .alert-warning {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: white;
+    }
+
+    .alert-info {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+
+    .alert-close {
+      position: absolute;
+      right: 15px;
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: 1.2em;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    .alert-close:hover {
+      opacity: 1;
+    }
+
+    .main-footer {
+      background: rgba(0,0,0,0.9);
+      color: white;
+      margin-top: 50px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .footer-section h3, .footer-section h4 {
+      margin-bottom: 15px;
+      color: #667eea;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section a:hover {
+      color: #667eea;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #444;
+      padding: 20px;
+      text-align: center;
+      color: #ccc;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(alert => {
+        const closeBtn = alert.querySelector('.alert-close');
+        
+        setTimeout(() => {
+          alert.style.animation = 'slideOut 0.3s ease forwards';
+          setTimeout(() => alert.remove(), 300);
+        }, 5000);
+        
+        closeBtn.addEventListener('click', () => {
+          alert.style.animation = 'slideOut 0.3s ease forwards';
+          setTimeout(() => alert.remove(), 300);
+        });
+      });
+
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideOut {
+          to {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    });
+  </script>
+</body>
+</html>

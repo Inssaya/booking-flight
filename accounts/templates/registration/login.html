@@ -1,0 +1,125 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Connexion — Sinif{% endblock %}
+
+{% block content %}
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Se connecter</h2>
+
+    {% if form.errors %}
+      <div class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        Votre identifiant ou mot de passe est incorrect.
+      </div>
+    {% endif %}
+
+    {% if next %}
+      <div class="alert alert-info">
+        {% if user.is_authenticated %}
+          <i class="fas fa-info-circle"></i>
+          Votre compte n’a pas accès à cette page.
+        {% else %}
+          <i class="fas fa-info-circle"></i>
+          Veuillez vous connecter pour continuer.
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}" class="login-form">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </div>
+      <div class="form-group">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+      </div>
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+    </form>
+
+    <div class="login-links">
+      <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
+      <span> | </span>
+      <a href="{% url 'accounts:signup' %}">Créer un compte</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    min-height: calc(100vh - 140px);
+    background: rgba(255,255,255,0.1);
+  }
+  .login-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  .login-title {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  .alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .alert-error { background: #f8d7da; color: #721c24; }
+  .alert-info  { background: #d1ecf1; color: #0c5460; }
+  .login-form .form-group {
+    margin-bottom: 15px;
+  }
+  .login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .login-form input[type="text"],
+  .login-form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  .btn-block {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .btn-block:hover {
+    background: linear-gradient(135deg, #5563c1, #5a3790);
+  }
+  .login-links {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+  }
+  .login-links a {
+    color: #667eea;
+    transition: color 0.3s;
+  }
+  .login-links a:hover {
+    color: #764ba2;
+  }
+</style>
+{% endblock %}

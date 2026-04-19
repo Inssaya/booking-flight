@@ -1,0 +1,111 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+
+<div class="container flight-detail">
+  <!-- Informations du vol -->
+  <div class="flight-info-card">
+    <h2>Vol {{ flight.id }} : {{ flight.departure_airport }} → {{ flight.arrival_airport }}</h2>
+    <div class="flight-timing">
+      <div class="timing-item">
+        <strong>Départ</strong>
+        <p>{{ flight.departure_time|date:"d/m/Y H:i" }}</p>
+      </div>
+      <div class="timing-separator arrow">➔</div>
+      <div class="timing-item">
+        <strong>Arrivée</strong>
+        <p>{{ flight.arrival_time|date:"d/m/Y H:i" }}</p>
+      </div>
+    </div>
+    <div class="flight-price">
+      <h3>Prix : €{{ flight.price }}</h3>
+    </div>
+  </div>
+
+  <!-- Sélection des sièges -->
+
+  <form method="post" action="{% url 'flights:book_ticket' flight.id %}" class="seat-selection">
+    {% csrf_token %}
+
+```
+{% if seats_by_row %}
+  <div class="seats-info">
+    <p>Total sièges : {{ total_seats }} – Disponibles : {{ available_count }} – Occupés : {{ occupied_count }}</p>
+  </div>
+
+  <div class="seats-grid">
+    {% for row, seats in seats_by_row %}
+      <div class="seat-row">
+        <span class="row-number">{{ row }}</span>
+        {% for seat in seats %}
+          <label class="seat-option {% if seat.reserved %}reserved{% else %}available{% endif %}">
+            {% if not seat.reserved %}
+              <input type="radio" name="seat_id" value="{{ seat.id }}">
+            {% endif %}
+            <span class="seat-label">
+              <span class="seat-number">{{ seat.seat_number }}</span>
+              <span class="seat-status">
+                {% if seat.reserved %}Réservé{% else %}Libre{% endif %}
+              </span>
+            </span>
+          </label>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="booking-actions">
+    <button type="submit" class="btn btn-success btn-large">Réserver le siège sélectionné</button>
+  </div>
+{% else %}
+  <div class="no-seats">
+    <p>Aucun siège disponible pour ce vol.</p>
+  </div>
+{% endif %}
+```
+
+  </form>
+</div>
+
+<style>
+/* Styles inchangés sauf ajout de .seat-row, .row-number */
+.container.flight-detail { max-width: 1000px; margin: 0 auto; padding: 20px; }
+.flight-info-card { background: #f8f9fa; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.flight-info-card h2 { text-align: center; margin-bottom: 20px; font-size: 2em; color: #333; }
+.flight-timing { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.timing-item { flex: 1; text-align: center; }
+.timing-separator { flex: 0 0 50px; font-size: 2em; color: #007bff; text-align: center; }
+.flight-price { text-align: center; padding-top: 10px; border-top: 2px solid #dee2e6; }
+.flight-price h3 { color: #28a745; font-size: 1.8em; margin: 0; }
+
+.seat-selection { background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
+.seats-info { margin-bottom: 15px; padding: 10px; background: #e8f4f8; border-radius: 4px; }
+.seats-grid { display: grid; gap: 10px; }
+.seat-row { display: flex; align-items: center; gap: 8px; }
+.row-number { width: 24px; font-weight: bold; }
+.seat-option { position: relative; }
+.seat-option input { display: none; }
+.seat-label { display: block; padding: 10px; border: 2px solid #ddd; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; background: white; }
+.seat-option.available .seat-label:hover { border-color: #28a745; background: #e9f7ef; }
+.seat-option.available input:checked + .seat-label { border-color: #28a745; background: #28a745; color: #fff; }
+.seat-option.reserved .seat-label { border-color: #dc3545; background: #f8d7da; cursor: not-allowed; color: #6c757d; }
+.seat-number { display: block; font-weight: bold; margin-bottom: 5px; }
+.seat-status { font-size: 0.8em; }
+
+.booking-actions { text-align: center; margin-top: 20px; }
+.btn { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 1em; }
+.btn-success { background-color: #28a745; color: white; }
+.btn-large { padding: 15px 30px; font-size: 1.1em; }
+
+.no-seats { text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px; }
+.no-seats p { font-size: 1.1em; color: #666; }
+
+@media (max-width: 768px) {
+  .flight-timing { flex-direction: column; gap: 15px; }
+  .seats-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+  .seat-row { flex-wrap: wrap; }
+}
+</style>
+
+{% endblock %}

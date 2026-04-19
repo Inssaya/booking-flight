@@ -1,0 +1,130 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+
+<style>
+    .profile-card {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        border: 1px solid #eaeaea;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        color: #2d3748;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .profile-header::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #667eea;
+        margin: 1rem auto 0;
+        border-radius: 2px;
+    }
+
+    .profile-detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 1rem;
+    }
+
+    .profile-detail-item:last-child {
+        border-bottom: none;
+    }
+
+    .profile-detail-item strong {
+        color: #667eea;
+        font-weight: 500;
+        min-width: 120px;
+    }
+
+    .profile-edit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white !important;
+        padding: 0.8rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 1.5rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .profile-edit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    @media (max-width: 640px) {
+        .profile-card {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .profile-detail-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .profile-detail-item strong {
+            margin-bottom: 0.25rem;
+        }
+    }
+</style>
+
+<div class="profile-card">
+    <h3 class="profile-header">👤 Profile Information</h3>
+    
+    <div class="profile-details">
+        <div class="profile-detail-item">
+            <strong>Username:</strong>
+            <span>{{ profile.user.username }}</span>
+        </div>
+        <div class="profile-detail-item">
+            <strong>Email:</strong>
+            <span>{{ profile.user.email }}</span>
+        </div>
+        <div class="profile-detail-item">
+            <strong>First Name:</strong>
+            <span>{{ profile.user.first_name }}</span>
+        </div>
+        <div class="profile-detail-item">
+            <strong>Last Name:</strong>
+            <span>{{ profile.user.last_name }}</span>
+        </div>
+        <div class="profile-detail-item">
+            <strong>Phone Number:</strong>
+            <span>{{ profile.phone_number }}</span>
+        </div>
+        <div class="profile-detail-item">
+            <strong>Address:</strong>
+            <span>{{ profile.address }}</span>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{% url 'accounts:profile_edit' %}" class="profile-edit-btn">
+            <svg style="width:16px;height:16px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+            </svg>
+            Edit Profile
+        </a>
+    </div>
+</div>
+
+{% endblock %}

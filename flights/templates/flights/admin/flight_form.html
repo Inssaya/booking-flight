@@ -1,0 +1,12 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h2>{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un vol</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">
+      {% if form.instance.pk %}Enregistrer les modifications{% else %}Créer le vol{% endif %}
+    </button>
+    <a href="{% url 'flights:admin_dashboard' %}">Annuler</a>
+  </form>
+{% endblock %}

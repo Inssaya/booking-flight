@@ -1,0 +1,15 @@
+<form method="get" class="search-form">
+  {{ form.non_field_errors }}
+  <div>
+    {{ form.departure_airport.label_tag }} {{ form.departure_airport }}
+    {{ form.arrival_airport.label_tag }} {{ form.arrival_airport }}
+  </div>
+  <div>
+    {{ form.date.label_tag }} {{ form.date }}
+  </div>
+  <div>
+    {{ form.min_price.label_tag }} {{ form.min_price }}
+    {{ form.max_price.label_tag }} {{ form.max_price }}
+  </div>
+  <button type="submit">Rechercher</button>
+</form>

@@ -1,0 +1,226 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>My Bookings</h1>
+    
+    {% if bookings %}
+        <div class="bookings-list">
+            {% for booking in bookings %}
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <h3>Booking #{{ booking.id }}</h3>
+                        <span class="booking-status status-{{ booking.status }}">
+                            {% if booking.status == 0 %}
+                                En attente
+                            {% elif booking.status == 1 %}
+                                Confirmé
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="booking-details">
+                        <div class="flight-info">
+                            <h4>{{ booking.flight.departure_airport }} → {{ booking.flight.arrival_airport }}</h4>
+                            
+                            <div class="flight-timing">
+                                <div class="timing-item">
+                                    <strong>Departure:</strong>
+                                    <p>{{ booking.flight.departure_time|date:"d/m/Y H:i" }}</p>
+                                    <p>{{ booking.flight.departure_airport.city }}</p>
+                                </div>
+                                
+                                <div class="timing-item">
+                                    <strong>Arrival:</strong>
+                                    <p>{{ booking.flight.arrival_time|date:"d/m/Y H:i" }}</p>
+                                    <p>{{ booking.flight.arrival_airport.city }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="booking-info">
+                            <div class="info-item">
+                                <strong>Seat:</strong>
+                                <span>{{ booking.seat.seat_number }}</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <strong>Price:</strong>
+                                <span>€{{ booking.flight.price }}</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <strong>Booked on:</strong>
+                                <span>{{ booking.date_booked|date:"d/m/Y H:i" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-bookings">
+            <h2>No bookings found</h2>
+            <p>You haven't made any bookings yet.</p>
+            <a href="{% url 'flights:home' %}" class="btn btn-primary">Search Flights</a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.bookings-list {
+    display: grid;
+    gap: 20px;
+}
+
+.booking-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.booking-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.booking-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.status-0 {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-1 {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.booking-details {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.flight-info h4 {
+    margin: 0 0 15px 0;
+    color: #007bff;
+    font-size: 1.3em;
+}
+
+.flight-timing {
+    display: flex;
+    gap: 30px;
+}
+
+.timing-item strong {
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.timing-item p {
+    margin: 2px 0;
+    color: #666;
+}
+
+.booking-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.info-item strong {
+    color: #333;
+}
+
+.info-item span {
+    font-weight: 500;
+}
+
+.no-bookings {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.no-bookings h2 {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.no-bookings p {
+    color: #888;
+    margin-bottom: 25px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .booking-details {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .flight-timing {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .booking-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+</style>
+{% endblock %}

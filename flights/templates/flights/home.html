@@ -1,0 +1,184 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Flight Search</h1>
+    
+    <!-- Search Form -->
+    <div class="search-section">
+        <form method="get" class="search-form">
+            {{ form.non_field_errors }}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.departure_airport.label_tag }}
+                    {{ form.departure_airport }}
+                </div>
+                <div class="form-group">
+                    {{ form.arrival_airport.label_tag }}
+                    {{ form.arrival_airport }}
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.date.label_tag }}
+                    {{ form.date }}
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.min_price.label_tag }}
+                    {{ form.min_price }}
+                </div>
+                <div class="form-group">
+                    {{ form.max_price.label_tag }}
+                    {{ form.max_price }}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+    </div>
+
+    <!-- Search Results -->
+    <div class="results-section">
+        <h2>Available Flights</h2>
+        
+        {% if page_obj %}
+            <div class="flights-list">
+                {% for flight in page_obj %}
+                    <div class="flight-card">
+                        <div class="flight-info">
+                            <h3>{{ flight.departure_airport }} → {{ flight.arrival_airport }}</h3>
+                            <p><strong>Departure:</strong> {{ flight.departure_time|date:"d/m/Y H:i" }}</p>
+                            <p><strong>Arrival:</strong> {{ flight.arrival_time|date:"d/m/Y H:i" }}</p>
+                            <p><strong>Duration:</strong> {{ flight.duration }}</p>
+                            <p><strong>Price:</strong> €{{ flight.price }}</p>
+                            <p><strong>Available Seats:</strong> {{ flight.total_seats }}</p>
+                        </div>
+                        <div class="flight-actions">
+                            <a href="{% url 'flights:flight_detail' flight.id %}" class="btn btn-info">View Details</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            <p>No flights found matching your criteria.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.flights-list {
+    display: grid;
+    gap: 20px;
+}
+
+.flight-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flight-info h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.flight-info p {
+    margin: 5px 0;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+</style>
+{% endblock %}

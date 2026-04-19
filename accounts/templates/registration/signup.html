@@ -1,0 +1,99 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Inscription — Sinif{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+  <div class="signup-card">
+    <h2 class="signup-title">Créer un compte</h2>
+    {% if form.errors %}
+      <div class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        Merci de corriger les erreurs ci-dessous.
+      </div>
+    {% endif %}
+    <form method="POST" class="signup-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.errors %}
+            <small class="field-error">{{ field.errors|join:", " }}</small>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">Inscription</button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    min-height: calc(100vh - 140px);
+    background: rgba(255,255,255,0.1);
+  }
+  .signup-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+  .signup-title {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  .signup-form .form-group {
+    margin-bottom: 15px;
+  }
+  .signup-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .signup-form input[type="text"],
+  .signup-form input[type="email"],
+  .signup-form input[type="password"],
+  .signup-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  .btn-block {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .btn-block:hover {
+    background: linear-gradient(135deg, #5563c1, #5a3790);
+  }
+  .field-error {
+    color: #c0392b;
+    font-size: 0.85em;
+  }
+  .alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+</style>
+{% endblock %}

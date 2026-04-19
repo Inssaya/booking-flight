@@ -1,0 +1,10 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h2>Supprimer le siège {{ object.seat_number }} du vol {{ object.flight.id }}</h2>
+  <p>Voulez-vous vraiment supprimer ce siège ?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Oui, supprimer</button>
+    <a href="{% url 'flights:admin_dashboard' %}">Non, revenir au dashboard</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,105 @@
+Folder PATH listing for volume OS
+Volume serial number is 18C5-DCB6
+C:.
+¦   db.sqlite3
+¦   manage.py
+¦   project_tree.txt
+¦   
++---accounts
+¦   ¦   admin.py
+¦   ¦   apps.py
+¦   ¦   backend.py
+¦   ¦   forms.py
+¦   ¦   models.py
+¦   ¦   test.html
+¦   ¦   tests.py
+¦   ¦   urls.py
+¦   ¦   views.py
+¦   ¦   __init__.py
+¦   ¦   
+¦   +---migrations
+¦   ¦   ¦   0001_initial.py
+¦   ¦   ¦   __init__.py
+¦   ¦   ¦   
+¦   ¦   +---__pycache__
+¦   ¦           0001_initial.cpython-313.pyc
+¦   ¦           __init__.cpython-313.pyc
+¦   ¦           
+¦   +---templates
+¦   ¦   +---profile
+¦   ¦   ¦       profile.html
+¦   ¦   ¦       profile_edit.html
+¦   ¦   ¦       
+¦   ¦   +---registration
+¦   ¦           logged_out.html
+¦   ¦           login.html
+¦   ¦           password_change_form.html
+¦   ¦           password_reset_complete.html
+¦   ¦           password_reset_confirm.html
+¦   ¦           password_reset_done.html
+¦   ¦           password_reset_email.html
+¦   ¦           password_reset_form.html
+¦   ¦           signup.html
+¦   ¦           
+¦   +---__pycache__
+¦           admin.cpython-313.pyc
+¦           apps.cpython-313.pyc
+¦           forms.cpython-313.pyc
+¦           models.cpython-313.pyc
+¦           urls.cpython-313.pyc
+¦           views.cpython-313.pyc
+¦           __init__.cpython-313.pyc
+¦           
++---myproject
+¦   ¦   asgi.py
+¦   ¦   settings.py
+¦   ¦   urls.py
+¦   ¦   wsgi.py
+¦   ¦   __init__.py
+¦   ¦   
+¦   +---__pycache__
+¦           settings.cpython-313.pyc
+¦           urls.cpython-313.pyc
+¦           wsgi.cpython-313.pyc
+¦           __init__.cpython-313.pyc
+¦           
++---templates
+¦   ¦   base_generic.html
+¦   ¦   
+¦   +---part
++---text_data
+    ¦   admin.py
+    ¦   apps.py
+    ¦   models.py
+    ¦   tests.py
+    ¦   urls.py
+    ¦   utils.py
+    ¦   views.py
+    ¦   __init__.py
+    ¦   
+    +---migrations
+    ¦   ¦   0001_initial.py
+    ¦   ¦   0002_textsubmission.py
+    ¦   ¦   __init__.py
+    ¦   ¦   
+    ¦   +---__pycache__
+    ¦           0001_initial.cpython-313.pyc
+    ¦           0002_textsubmission.cpython-313.pyc
+    ¦           __init__.cpython-313.pyc
+    ¦           
+    +---templates
+    ¦   ¦   shi haja
+    ¦   ¦   
+    ¦   +---text_data
+    ¦           simple_form.html
+    ¦           simple_result.html
+    ¦           
+    +---__pycache__
+            admin.cpython-313.pyc
+            apps.cpython-313.pyc
+            models.cpython-313.pyc
+            urls.cpython-313.pyc
+            utils.cpython-313.pyc
+            views.cpython-313.pyc
+            __init__.cpython-313.pyc
+            
